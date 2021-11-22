@@ -24,11 +24,11 @@ pub mod seal {
 	//setup
 	fn new_encryption_parameters() -> UniquePtr<EncryptionParameters>;
 	fn print_parameters(ctx:&UniquePtr<SEALContext>);
-	fn EncryptionParameters_set_poly_modulus_degree(ep:&UniquePtr<EncryptionParameters>, poly_modulus_degree:u64);
-	fn EncryptionParameters_set_coeff_modulus_Create(ep:&UniquePtr<EncryptionParameters>, poly_modulus_degree:u64, bit_sizes:&Vec<i32>);
-	fn EncryptionParameters_set_coeff_modulus_BFVDefault(ep:&UniquePtr<EncryptionParameters>, poly_modulus_degree:u64);
-	fn EncryptionParameters_set_plain_modulus(ep:&UniquePtr<EncryptionParameters>, plain_modulus:u64);
-	fn EncryptionParameters_set_plain_modulus_Batching(ep:&UniquePtr<EncryptionParameters>, poly_modulus_degree:u64, bit_size:i32);
+	fn EncryptionParameters_set_poly_modulus_degree(ep:&UniquePtr<EncryptionParameters>, poly_modulus_degree:usize);
+	fn EncryptionParameters_set_coeff_modulus_Create(ep:&UniquePtr<EncryptionParameters>, poly_modulus_degree:usize, bit_sizes:&Vec<i32>);
+	fn EncryptionParameters_set_coeff_modulus_BFVDefault(ep:&UniquePtr<EncryptionParameters>, poly_modulus_degree:usize);
+	fn EncryptionParameters_set_plain_modulus(ep:&UniquePtr<EncryptionParameters>, plain_modulus:usize);
+	fn EncryptionParameters_set_plain_modulus_Batching(ep:&UniquePtr<EncryptionParameters>, poly_modulus_degree:usize, bit_size:i32);
 	//fn EncryptionParameters_save() -> ;
 	//fn EncryptionParameters_load();
 	fn new_SEALContext(ep:&UniquePtr<EncryptionParameters>) -> UniquePtr<SEALContext>;
@@ -50,7 +50,7 @@ pub mod seal {
 	fn Plaintext_to_string(plaintext:&UniquePtr<Plaintext>) -> String;
 	//use simd
 	fn new_BatchEncoder(ctx:&UniquePtr<SEALContext>) -> UniquePtr<BatchEncoder>;
-	fn slot_count(be:&UniquePtr<BatchEncoder>) -> u64;
+	fn slot_count(be:&UniquePtr<BatchEncoder>) -> usize;
 	fn encode(be:&UniquePtr<BatchEncoder>, vec:&Vec<u64>) -> UniquePtr<Plaintext>;
 	fn decode(be:&UniquePtr<BatchEncoder>, plain:&UniquePtr<Plaintext>) -> Vec<u64>;
 	
@@ -84,4 +84,3 @@ pub mod seal {
 	fn multiply_plain(evaluator:&UniquePtr<Evaluator>, encrypted:&UniquePtr<Ciphertext>, plain:&UniquePtr<Plaintext>) -> UniquePtr<Ciphertext>;
     }
 }
-
