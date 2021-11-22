@@ -9,7 +9,7 @@ use bridge::seal::*;
 fn test1() {
     let param = new_encryption_parameters();
     
-    let poly_modulus_degree:u64 = 4096;
+    let poly_modulus_degree:usize = 4096;
     EncryptionParameters_set_poly_modulus_degree(&param, poly_modulus_degree);
     let bit_sizes = vec![20,20,20]; 
     //EncryptionParameters_set_coeff_modulus_Create(&param, poly_modulus_degree, &bit_sizes);
@@ -47,7 +47,7 @@ fn test1() {
 fn test2() {
     let param = new_encryption_parameters();
     
-    let poly_modulus_degree:u64 = 4096;
+    let poly_modulus_degree:usize = 4096;
     EncryptionParameters_set_poly_modulus_degree(&param, poly_modulus_degree);
     let bit_sizes = vec![36 , 36 , 37]; 
     //EncryptionParameters_set_coeff_modulus_Create(&param, poly_modulus_degree, &bit_sizes);
@@ -73,7 +73,7 @@ fn test2() {
     let row_size = slot_count/2;
     let mut vec = Vec::new();
     for i in 1..slot_count{
-    	vec.push(i);
+    	vec.push(i as u64);
     }
     let plaintext = encode(&be, &vec);
     
@@ -85,8 +85,7 @@ fn test2() {
     
     let plain = decrypt(&decryptor, &res);
     let v = decode(&be, &plain);
-    for i in 1..(slot_count as usize) {
+    for i in 1..slot_count {
     	println!("{}",v[i]);
     }
 }
-
