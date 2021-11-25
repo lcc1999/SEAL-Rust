@@ -1,5 +1,4 @@
 #[cxx::bridge(namespace = "seal")]
-
 pub mod seal {
 
     unsafe extern "C++" {
