@@ -13,7 +13,7 @@ namespace seal
 	typedef Serializable<Ciphertext> SerializableCiphertext;
 	void print_parameters(const std::unique_ptr<SEALContext>& ctx);
 	//setup
-	std::unique_ptr<EncryptionParameters> new_encryption_parameters();
+	std::unique_ptr<EncryptionParameters> new_encryption_parameters(uint8_t scheme);
 	void EncryptionParameters_set_poly_modulus_degree(const std::unique_ptr<EncryptionParameters>& ep, size_t degree);
 	void EncryptionParameters_set_coeff_modulus_Create(const std::unique_ptr<EncryptionParameters>& ep, size_t poly_modulus_degree, const rust::Vec<int> &bit_sizes);
 	void EncryptionParameters_set_coeff_modulus_BFVDefault(const std::unique_ptr<EncryptionParameters>& ep, size_t poly_modulus_degree);
@@ -36,9 +36,14 @@ namespace seal
 	rust::String Plaintext_to_string(const std::unique_ptr<Plaintext>& plaintext);
 	//use simd
 	std::unique_ptr<BatchEncoder> new_BatchEncoder(const std::unique_ptr<SEALContext>& ctx);
-	size_t slot_count(const std::unique_ptr<BatchEncoder>& be);
-	std::unique_ptr<Plaintext> encode(const std::unique_ptr<BatchEncoder>& be, const rust::Vec<uint64_t> &vec);
-	rust::Vec<uint64_t> decode(const std::unique_ptr<BatchEncoder>& be, const std::unique_ptr<Plaintext>& plain);
+	size_t BatchEncoder_slot_count(const std::unique_ptr<BatchEncoder>& be);
+	std::unique_ptr<Plaintext> BatchEncoder_encode(const std::unique_ptr<BatchEncoder>& be, const rust::Vec<uint64_t> &vec);
+	rust::Vec<uint64_t> BatchEncoder_decode(const std::unique_ptr<BatchEncoder>& be, const std::unique_ptr<Plaintext>& plain);
+	std::unique_ptr<CKKSEncoder> new_CKKSEncoder(const std::unique_ptr<SEALContext>& ctx);
+	size_t CKKSEncoder_slot_count(const std::unique_ptr<CKKSEncoder>& ce);
+	std::unique_ptr<Plaintext> CKKSEncoder_encode_vec(const std::unique_ptr<CKKSEncoder>& ce, double scale, const rust::Vec<double> &vec);
+	std::unique_ptr<Plaintext> CKKSEncoder_encode(const std::unique_ptr<CKKSEncoder>& ce, double scale, double value);
+	rust::Vec<double> CKKSEncoder_decode(const std::unique_ptr<CKKSEncoder>& ce, const std::unique_ptr<Plaintext>& plain);
 	
 	
 	//encryptor and decryptor
@@ -65,4 +70,8 @@ namespace seal
 	std::unique_ptr<Ciphertext> add_plain(const std::unique_ptr<Evaluator>& evaluator, const std::unique_ptr<Ciphertext>& encrypted, const std::unique_ptr<Plaintext>& plain);
 	std::unique_ptr<Ciphertext> sub_plain(const std::unique_ptr<Evaluator>& evaluator, const std::unique_ptr<Ciphertext>& encrypted, const std::unique_ptr<Plaintext>& plain);
 	std::unique_ptr<Ciphertext> multiply_plain(const std::unique_ptr<Evaluator>& evaluator, const std::unique_ptr<Ciphertext>& encrypted, const std::unique_ptr<Plaintext>& plain);
+	
+	void setscale(const std::unique_ptr<Ciphertext>& encrypted, double scale);
+	std::unique_ptr<parms_id_type> parms_id(const std::unique_ptr<Ciphertext>& encrypted);
+	std::unique_ptr<Ciphertext> mod_switch_to(const std::unique_ptr<Evaluator>& evaluator, const std::unique_ptr<Ciphertext>& encrypted, const std::unique_ptr<parms_id_type>& id);
 }
