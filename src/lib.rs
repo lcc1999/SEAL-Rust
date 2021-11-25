@@ -57,7 +57,6 @@ fn test2() {
     let ctx = new_SEALContext(&param);
     print_parameters(&ctx);
     
-    
     let keygen = new_KeyGenerator(&ctx);
     let sk = KeyGenerator_secret_key(&keygen);
     let spk = KeyGenerator_create_public_key(&keygen);
