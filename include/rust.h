@@ -71,6 +71,19 @@ namespace seal
 	std::unique_ptr<Ciphertext> sub_plain(const std::unique_ptr<Evaluator>& evaluator, const std::unique_ptr<Ciphertext>& encrypted, const std::unique_ptr<Plaintext>& plain);
 	std::unique_ptr<Ciphertext> multiply_plain(const std::unique_ptr<Evaluator>& evaluator, const std::unique_ptr<Ciphertext>& encrypted, const std::unique_ptr<Plaintext>& plain);
 	
+	void negate_inplace(const std::unique_ptr<Evaluator>& evaluator, std::unique_ptr<Ciphertext>& encrypted);
+	void add_inplace(const std::unique_ptr<Evaluator>& evaluator, std::unique_ptr<Ciphertext>& encrypted1, const std::unique_ptr<Ciphertext>& encrypted2);
+	void sub_inplace(const std::unique_ptr<Evaluator>& evaluator, std::unique_ptr<Ciphertext>& encrypted1, const std::unique_ptr<Ciphertext>& encrypted2);
+	void multiply_inplace(const std::unique_ptr<Evaluator>& evaluator, std::unique_ptr<Ciphertext>& encrypted1, const std::unique_ptr<Ciphertext>& encrypted2);
+	void square_inplace(const std::unique_ptr<Evaluator>& evaluator, std::unique_ptr<Ciphertext>& encrypted);
+	void relinearize_inplace(const std::unique_ptr<Evaluator>& evaluator, std::unique_ptr<Ciphertext>& encrypted, const std::unique_ptr<RelinKeys>& rlk);
+	void rescale_to_next_inplace(const std::unique_ptr<Evaluator>& evaluator, std::unique_ptr<Ciphertext>& encrypted);
+	void exponentiate_inplace(const std::unique_ptr<Evaluator>& evaluator, std::unique_ptr<Ciphertext>& encrypted, uint64_t exponent, const std::unique_ptr<RelinKeys>& rlk);
+	void add_plain_inplace(const std::unique_ptr<Evaluator>& evaluator, std::unique_ptr<Ciphertext>& encrypted, const std::unique_ptr<Plaintext>& plain);
+	void sub_plain_inplace(const std::unique_ptr<Evaluator>& evaluator, std::unique_ptr<Ciphertext>& encrypted, const std::unique_ptr<Plaintext>& plain);
+	void multiply_plain_inplace(const std::unique_ptr<Evaluator>& evaluator, std::unique_ptr<Ciphertext>& encrypted, const std::unique_ptr<Plaintext>& plain);
+	
+	
 	void setscale(const std::unique_ptr<Ciphertext>& encrypted, double scale);
 	std::unique_ptr<parms_id_type> parms_id(const std::unique_ptr<Ciphertext>& encrypted);
 	std::unique_ptr<Ciphertext> mod_switch_to(const std::unique_ptr<Evaluator>& evaluator, const std::unique_ptr<Ciphertext>& encrypted, const std::unique_ptr<parms_id_type>& id);
