@@ -77,18 +77,30 @@ pub mod seal {
 	//evaluator
 	fn new_Evaluator(ctx:&UniquePtr<SEALContext>) -> UniquePtr<Evaluator>;
 	fn negate(evaluator:&UniquePtr<Evaluator>, encrypted:&UniquePtr<Ciphertext>) -> UniquePtr<Ciphertext>;
+	fn negate_inplace(evaluator:&UniquePtr<Evaluator>, encrypted:&mut UniquePtr<Ciphertext>);
 	fn add(evaluator:&UniquePtr<Evaluator>, encrypted1:&UniquePtr<Ciphertext>, encrypted2:&UniquePtr<Ciphertext>) -> UniquePtr<Ciphertext>;
+	fn add_inplace(evaluator:&UniquePtr<Evaluator>, encrypted1:&mut UniquePtr<Ciphertext>, encrypted2:&UniquePtr<Ciphertext>);
 	//fn add_many(evaluator:&UniquePtr<Evaluator>, encrypted:&Vec<Ciphertext>) -> UniquePtr<Ciphertext>;
 	fn sub(evaluator:&UniquePtr<Evaluator>, encrypted1:&UniquePtr<Ciphertext>, encrypted2:&UniquePtr<Ciphertext>) -> UniquePtr<Ciphertext>;
+	fn sub_inplace(evaluator:&UniquePtr<Evaluator>, encrypted1:&mut UniquePtr<Ciphertext>, encrypted2:&UniquePtr<Ciphertext>);
 	fn multiply(evaluator:&UniquePtr<Evaluator>, encrypted1:&UniquePtr<Ciphertext>, encrypted2:&UniquePtr<Ciphertext>) -> UniquePtr<Ciphertext>;
+	fn multiply_inplace(evaluator:&UniquePtr<Evaluator>, encrypted1:&mut UniquePtr<Ciphertext>, encrypted2:&UniquePtr<Ciphertext>);
 	fn square(evaluator:&UniquePtr<Evaluator>, encrypted:&UniquePtr<Ciphertext>) -> UniquePtr<Ciphertext>;
+	fn square_inplace(evaluator:&UniquePtr<Evaluator>, encrypted:&mut UniquePtr<Ciphertext>);
 	fn relinearize(evaluator:&UniquePtr<Evaluator>, encrypted:&UniquePtr<Ciphertext>, rlk:&UniquePtr<RelinKeys>) -> UniquePtr<Ciphertext>;
+	fn relinearize_inplace(evaluator:&UniquePtr<Evaluator>, encrypted:&mut UniquePtr<Ciphertext>, rlk:&UniquePtr<RelinKeys>);
 	fn rescale_to_next(evaluator:&UniquePtr<Evaluator>, encrypted:&UniquePtr<Ciphertext>) -> UniquePtr<Ciphertext>;
+	fn rescale_to_next_inplace(evaluator:&UniquePtr<Evaluator>, encrypted:&mut UniquePtr<Ciphertext>);
 	//fn multiply_many(evaluator:&UniquePtr<Evaluator>, encrypted:&Vec<Ciphertext>) -> UniquePtr<Ciphertext>;
 	fn exponentiate(evaluator:&UniquePtr<Evaluator>, encrypted:&UniquePtr<Ciphertext>, exponent:u64, rlk:&UniquePtr<RelinKeys>) -> UniquePtr<Ciphertext>;
+	fn exponentiate_inplace(evaluator:&UniquePtr<Evaluator>, encrypted:&mut UniquePtr<Ciphertext>, exponent:u64, rlk:&UniquePtr<RelinKeys>);
 	fn add_plain(evaluator:&UniquePtr<Evaluator>, encrypted:&UniquePtr<Ciphertext>, plain:&UniquePtr<Plaintext>) -> UniquePtr<Ciphertext>;
+	fn add_plain_inplace(evaluator:&UniquePtr<Evaluator>, encrypted:&mut UniquePtr<Ciphertext>, plain:&UniquePtr<Plaintext>);
 	fn sub_plain(evaluator:&UniquePtr<Evaluator>, encrypted:&UniquePtr<Ciphertext>, plain:&UniquePtr<Plaintext>) -> UniquePtr<Ciphertext>;
+	fn sub_plain_inplace(evaluator:&UniquePtr<Evaluator>, encrypted:&mut UniquePtr<Ciphertext>, plain:&UniquePtr<Plaintext>);
 	fn multiply_plain(evaluator:&UniquePtr<Evaluator>, encrypted:&UniquePtr<Ciphertext>, plain:&UniquePtr<Plaintext>) -> UniquePtr<Ciphertext>;
+	fn multiply_plain_inplace(evaluator:&UniquePtr<Evaluator>, encrypted:&mut UniquePtr<Ciphertext>, plain:&UniquePtr<Plaintext>);
+	
 	
 	fn setscale(encrypted:&UniquePtr<Ciphertext>, scale:f64);
 	fn parms_id(encrypted:&UniquePtr<Ciphertext>) -> UniquePtr<parms_id_type>;
