@@ -269,6 +269,43 @@ void print_parameters(const std::unique_ptr<SEALContext>& ctx)
 		return res;
 	}
 	
+	
+	
+	void negate_inplace(const std::unique_ptr<Evaluator>& evaluator, std::unique_ptr<Ciphertext>& encrypted) {
+		evaluator->negate_inplace(*encrypted);
+	}
+	void add_inplace(const std::unique_ptr<Evaluator>& evaluator, std::unique_ptr<Ciphertext>& encrypted1, const std::unique_ptr<Ciphertext>& encrypted2) {
+		evaluator->add_inplace(*encrypted1, *encrypted2);
+	}
+	void sub_inplace(const std::unique_ptr<Evaluator>& evaluator, std::unique_ptr<Ciphertext>& encrypted1, const std::unique_ptr<Ciphertext>& encrypted2) {
+		evaluator->sub_inplace(*encrypted1, *encrypted2);
+	}
+	void multiply_inplace(const std::unique_ptr<Evaluator>& evaluator, std::unique_ptr<Ciphertext>& encrypted1, const std::unique_ptr<Ciphertext>& encrypted2) {
+		evaluator->multiply_inplace(*encrypted1, *encrypted2);
+	}
+	void square_inplace(const std::unique_ptr<Evaluator>& evaluator, std::unique_ptr<Ciphertext>& encrypted) {
+		evaluator->square_inplace(*encrypted);
+	}
+	void relinearize_inplace(const std::unique_ptr<Evaluator>& evaluator, std::unique_ptr<Ciphertext>& encrypted, const std::unique_ptr<RelinKeys>& rlk) {
+		evaluator->relinearize_inplace(*encrypted, *rlk);
+	}
+	void rescale_to_next_inplace(const std::unique_ptr<Evaluator>& evaluator, std::unique_ptr<Ciphertext>& encrypted) {
+		evaluator->rescale_to_next_inplace(*encrypted);
+	}
+	void exponentiate_inplace(const std::unique_ptr<Evaluator>& evaluator, std::unique_ptr<Ciphertext>& encrypted, uint64_t exponent, const std::unique_ptr<RelinKeys>& rlk) {
+		evaluator->exponentiate_inplace(*encrypted, exponent, *rlk);
+	}
+	void add_plain_inplace(const std::unique_ptr<Evaluator>& evaluator, std::unique_ptr<Ciphertext>& encrypted, const std::unique_ptr<Plaintext>& plain) {
+		evaluator->add_plain_inplace(*encrypted, *plain);
+	}
+	void sub_plain_inplace(const std::unique_ptr<Evaluator>& evaluator, std::unique_ptr<Ciphertext>& encrypted, const std::unique_ptr<Plaintext>& plain) {
+		evaluator->sub_plain_inplace(*encrypted, *plain);
+	}
+	void multiply_plain_inplace(const std::unique_ptr<Evaluator>& evaluator, std::unique_ptr<Ciphertext>& encrypted, const std::unique_ptr<Plaintext>& plain) {
+		evaluator->multiply_plain_inplace(*encrypted, *plain);
+	}
+	
+	
 	void setscale(const std::unique_ptr<Ciphertext>& encrypted, double scale) {
 		encrypted->scale()=scale;
 	}
@@ -279,5 +316,8 @@ void print_parameters(const std::unique_ptr<SEALContext>& ctx)
 		std::unique_ptr<Ciphertext> res = std::make_unique<Ciphertext>();
 		evaluator->mod_switch_to(*encrypted, *id, *res);
 		return res;
+	}
+	void mod_switch_to_inplace(const std::unique_ptr<Evaluator>& evaluator, std::unique_ptr<Ciphertext>& encrypted, const std::unique_ptr<parms_id_type>& id){
+		evaluator->mod_switch_to_inplace(*encrypted, *id);
 	}
 }
