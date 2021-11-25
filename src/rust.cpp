@@ -51,8 +51,8 @@ void print_parameters(const std::unique_ptr<SEALContext>& ctx)
     std::cout << "\\" << std::endl;
 }
 	//setup
-	std::unique_ptr<EncryptionParameters> new_encryption_parameters() {
-  		return std::make_unique<EncryptionParameters>(1);
+	std::unique_ptr<EncryptionParameters> new_encryption_parameters(uint8_t scheme) {
+  		return std::make_unique<EncryptionParameters>(scheme);
 	}
 	void EncryptionParameters_set_poly_modulus_degree(const std::unique_ptr<EncryptionParameters>& ep, size_t degree) {
         	ep->set_poly_modulus_degree(degree);
@@ -121,20 +121,45 @@ void print_parameters(const std::unique_ptr<SEALContext>& ctx)
 	std::unique_ptr<BatchEncoder> new_BatchEncoder(const std::unique_ptr<SEALContext>& ctx) {
 		return std::make_unique<BatchEncoder>(*ctx);
 	}
-	size_t slot_count(const std::unique_ptr<BatchEncoder>& be) {
+	size_t BatchEncoder_slot_count(const std::unique_ptr<BatchEncoder>& be) {
 		return be->slot_count();
 	}
-	std::unique_ptr<Plaintext> encode(const std::unique_ptr<BatchEncoder>& be, const rust::Vec<uint64_t> &vec) {
+	std::unique_ptr<Plaintext> BatchEncoder_encode(const std::unique_ptr<BatchEncoder>& be, const rust::Vec<uint64_t> &vec) {
 		std::unique_ptr<Plaintext> plaintext = std::make_unique<Plaintext>();
 		std::vector<uint64_t> v;
   		std::copy(vec.begin(), vec.end(), std::back_inserter(v));
 		be->encode(v, *plaintext);
 		return plaintext;
 	}
-	rust::Vec<uint64_t> decode(const std::unique_ptr<BatchEncoder>& be, const std::unique_ptr<Plaintext>& plain) {
+	rust::Vec<uint64_t> BatchEncoder_decode(const std::unique_ptr<BatchEncoder>& be, const std::unique_ptr<Plaintext>& plain) {
 		rust::Vec<uint64_t> vec;
 		std::vector<uint64_t> v;
 		be->decode(*plain, v);
+		std::copy(v.begin(), v.end(), std::back_inserter(vec));
+		return vec;
+	}
+	std::unique_ptr<CKKSEncoder> new_CKKSEncoder(const std::unique_ptr<SEALContext>& ctx) {
+		return std::make_unique<CKKSEncoder>(*ctx);
+	}
+	size_t CKKSEncoder_slot_count(const std::unique_ptr<CKKSEncoder>& ce) {
+		return ce->slot_count();
+	}
+	std::unique_ptr<Plaintext> CKKSEncoder_encode_vec(const std::unique_ptr<CKKSEncoder>& ce, double scale, const rust::Vec<double> &vec) {
+		std::unique_ptr<Plaintext> plaintext = std::make_unique<Plaintext>();
+		std::vector<double> v;
+  		std::copy(vec.begin(), vec.end(), std::back_inserter(v));
+		ce->encode(v, scale, *plaintext);
+		return plaintext;
+	}
+	std::unique_ptr<Plaintext> CKKSEncoder_encode(const std::unique_ptr<CKKSEncoder>& ce, double scale, double value){
+		std::unique_ptr<Plaintext> plaintext = std::make_unique<Plaintext>();
+		ce->encode(value, scale, *plaintext);
+		return plaintext;
+	}
+	rust::Vec<double> CKKSEncoder_decode(const std::unique_ptr<CKKSEncoder>& ce, const std::unique_ptr<Plaintext>& plain) {
+		rust::Vec<double> vec;
+		std::vector<double> v;
+		ce->decode(*plain, v);
 		std::copy(v.begin(), v.end(), std::back_inserter(vec));
 		return vec;
 	}
@@ -241,6 +266,18 @@ void print_parameters(const std::unique_ptr<SEALContext>& ctx)
 	std::unique_ptr<Ciphertext> multiply_plain(const std::unique_ptr<Evaluator>& evaluator, const std::unique_ptr<Ciphertext>& encrypted, const std::unique_ptr<Plaintext>& plain) {
 		std::unique_ptr<Ciphertext> res = std::make_unique<Ciphertext>();
 		evaluator->multiply_plain(*encrypted, *plain, *res);
+		return res;
+	}
+	
+	void setscale(const std::unique_ptr<Ciphertext>& encrypted, double scale) {
+		encrypted->scale()=scale;
+	}
+	std::unique_ptr<parms_id_type> parms_id(const std::unique_ptr<Ciphertext>& encrypted){
+		return std::make_unique<parms_id_type>((encrypted->parms_id()));
+	}
+	std::unique_ptr<Ciphertext> mod_switch_to(const std::unique_ptr<Evaluator>& evaluator, const std::unique_ptr<Ciphertext>& encrypted, const std::unique_ptr<parms_id_type>& id){
+		std::unique_ptr<Ciphertext> res = std::make_unique<Ciphertext>();
+		evaluator->mod_switch_to(*encrypted, *id, *res);
 		return res;
 	}
 }
