@@ -18,10 +18,13 @@ pub mod seal {
 	type Encryptor;
 	type Decryptor;
 	type Evaluator;
+	//ckks
+	type CKKSEncoder;
+	type parms_id_type;
 	
 	
 	//setup
-	fn new_encryption_parameters() -> UniquePtr<EncryptionParameters>;
+	fn new_encryption_parameters(scheme:u8) -> UniquePtr<EncryptionParameters>;
 	fn print_parameters(ctx:&UniquePtr<SEALContext>);
 	fn EncryptionParameters_set_poly_modulus_degree(ep:&UniquePtr<EncryptionParameters>, poly_modulus_degree:usize);
 	fn EncryptionParameters_set_coeff_modulus_Create(ep:&UniquePtr<EncryptionParameters>, poly_modulus_degree:usize, bit_sizes:&Vec<i32>);
@@ -49,9 +52,14 @@ pub mod seal {
 	fn Plaintext_to_string(plaintext:&UniquePtr<Plaintext>) -> String;
 	//use simd
 	fn new_BatchEncoder(ctx:&UniquePtr<SEALContext>) -> UniquePtr<BatchEncoder>;
-	fn slot_count(be:&UniquePtr<BatchEncoder>) -> usize;
-	fn encode(be:&UniquePtr<BatchEncoder>, vec:&Vec<u64>) -> UniquePtr<Plaintext>;
-	fn decode(be:&UniquePtr<BatchEncoder>, plain:&UniquePtr<Plaintext>) -> Vec<u64>;
+	fn BatchEncoder_slot_count(be:&UniquePtr<BatchEncoder>) -> usize;
+	fn BatchEncoder_encode(be:&UniquePtr<BatchEncoder>, vec:&Vec<u64>) -> UniquePtr<Plaintext>;
+	fn BatchEncoder_decode(be:&UniquePtr<BatchEncoder>, plain:&UniquePtr<Plaintext>) -> Vec<u64>;
+	fn new_CKKSEncoder(ctx:&UniquePtr<SEALContext>) -> UniquePtr<CKKSEncoder>;
+	fn CKKSEncoder_slot_count(ce:&UniquePtr<CKKSEncoder>) -> usize;
+	fn CKKSEncoder_encode_vec(ce:&UniquePtr<CKKSEncoder>, scale:f64 ,vec:&Vec<f64>) -> UniquePtr<Plaintext>;
+	fn CKKSEncoder_encode(ce:&UniquePtr<CKKSEncoder>, scale:f64 ,value:f64) -> UniquePtr<Plaintext>;
+	fn CKKSEncoder_decode(ce:&UniquePtr<CKKSEncoder>, plain:&UniquePtr<Plaintext>) -> Vec<f64>;
 	
 	
 	//decryptor
@@ -81,5 +89,9 @@ pub mod seal {
 	fn add_plain(evaluator:&UniquePtr<Evaluator>, encrypted:&UniquePtr<Ciphertext>, plain:&UniquePtr<Plaintext>) -> UniquePtr<Ciphertext>;
 	fn sub_plain(evaluator:&UniquePtr<Evaluator>, encrypted:&UniquePtr<Ciphertext>, plain:&UniquePtr<Plaintext>) -> UniquePtr<Ciphertext>;
 	fn multiply_plain(evaluator:&UniquePtr<Evaluator>, encrypted:&UniquePtr<Ciphertext>, plain:&UniquePtr<Plaintext>) -> UniquePtr<Ciphertext>;
+	
+	fn setscale(encrypted:&UniquePtr<Ciphertext>, scale:f64);
+	fn parms_id(encrypted:&UniquePtr<Ciphertext>) -> UniquePtr<parms_id_type>;
+	fn mod_switch_to(evaluator:&UniquePtr<Evaluator>, encrypted:&UniquePtr<Ciphertext>, id:&UniquePtr<parms_id_type>) -> UniquePtr<Ciphertext>;
     }
 }
