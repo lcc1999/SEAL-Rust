@@ -244,4 +244,3 @@ void print_parameters(const std::unique_ptr<SEALContext>& ctx)
 		return res;
 	}
 }
-
