@@ -7,7 +7,7 @@ use bridge::seal::*;
 
 #[test]
 fn test1() {
-    let param = new_encryption_parameters();
+    let param = new_encryption_parameters(1);
     
     let poly_modulus_degree:usize = 4096;
     EncryptionParameters_set_poly_modulus_degree(&param, poly_modulus_degree);
@@ -45,7 +45,7 @@ fn test1() {
 
 #[test]
 fn test2() {
-    let param = new_encryption_parameters();
+    let param = new_encryption_parameters(1);
     
     let poly_modulus_degree:usize = 4096;
     EncryptionParameters_set_poly_modulus_degree(&param, poly_modulus_degree);
