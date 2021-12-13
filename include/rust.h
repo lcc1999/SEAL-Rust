@@ -87,4 +87,5 @@ namespace seal
 	void setscale(const std::unique_ptr<Ciphertext>& encrypted, double scale);
 	std::unique_ptr<parms_id_type> parms_id(const std::unique_ptr<Ciphertext>& encrypted);
 	std::unique_ptr<Ciphertext> mod_switch_to(const std::unique_ptr<Evaluator>& evaluator, const std::unique_ptr<Ciphertext>& encrypted, const std::unique_ptr<parms_id_type>& id);
+	void mod_switch_to_inplace(const std::unique_ptr<Evaluator>& evaluator, std::unique_ptr<Ciphertext>& encrypted, const std::unique_ptr<parms_id_type>& id);
 }
