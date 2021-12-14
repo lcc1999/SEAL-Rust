@@ -30,11 +30,25 @@ fn main() {
 
     //Cmake
     Command::new("cmake")
-            .arg("./src/")
+            .arg("-S")
+            .arg(".")
+            .arg("-B")
+            .arg("build")
             .arg("-DSEAL_USE_INTRIN=OFF")
             //.arg("-DSEAL_USE_CXX17=OFF")
             .output()
             .expect("failed to execute process");
+    Command::new("cmake")
+            .arg("--build")
+            .arg("build")
+            .output()
+            .expect("failed to execute process");
+    /*Command::new("cmake")
+            .arg("./src/")
+            .arg("-DSEAL_USE_INTRIN=OFF")
+            //.arg("-DSEAL_USE_CXX17=OFF")
+            .output()
+            .expect("failed to execute process");*/
     // Resetting working directory
     let _res = match env::set_current_dir(Path::new("../")) {
         Ok(r) => r,
@@ -54,15 +68,15 @@ fn main() {
     add_cpp_files(&mut build, base_path);
     add_cpp_files(&mut build, util_base_path);
     build.include("./seal/native/src");
-    //build.include("./seal/build/native/src");
+    build.include("./seal/build/native/src");
     build.include("./seal/thirdparty/msgsl-src/include");
     build.include("./seal/thirdparty/zstd-src/lib");
     build.include("./seal/thirdparty/zstd-src/lib/common");
     build.include("./seal/thirdparty/zlib-src");
     build.include("./seal/build/thirdparty/zlib-src");
-    //build.include("/usr/include/c++/9");
-    //build.include("/usr/include/x86_64-linux-gnu/c++/9");
-    //build.include("/usr/include");
+    build.include("/usr/include/c++/9");
+    build.include("/usr/include/x86_64-linux-gnu/c++/9");
+    build.include("/usr/include");
     build.include("src/");
     build.file("src/bindings.cpp");
     build.compile("seal");
